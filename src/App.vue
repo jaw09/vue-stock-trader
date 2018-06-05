@@ -1,14 +1,27 @@
 <template>
   <div id="app" class="container">
-    <router-view></router-view>
+    <app-header></app-header>
+    <div class="row">
+      <div class="col-12">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from "./components/Header";
+
 export default {
-  name: "App"
+  name: "App",
+  components: {
+    AppHeader: Header
+  }
 };
 </script>
 
-<style>
+<style lang="scss">
+body {
+  padding: 30px;
+}
 </style>
