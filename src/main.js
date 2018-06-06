@@ -10,6 +10,13 @@ import 'bootstrap/scss/bootstrap.scss'
 
 Vue.config.productionTip = false
 
+Vue.filter('currency', (value) => {
+  return value.toLocaleString('en', {
+    style: 'currency',
+    currency: 'TWD'
+  });
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

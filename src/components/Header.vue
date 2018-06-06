@@ -30,10 +30,22 @@
           <a class="dropdown-item" href="#">Load Data</a>
         </div>
       </li>
+      <li class="navbar-text">Funds: {{ getFunds | currency }}</li>
     </ul>
   </div>
 </nav>
 </template>
+
+<script>
+export default {
+  computed: {
+    getFunds() {
+      return this.$store.getters.funds;
+    }
+  }
+};
+</script>
+
 
 <style lang="scss">
 .navbar-rounded {
