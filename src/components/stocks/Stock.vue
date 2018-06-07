@@ -7,13 +7,20 @@
         </div>
       </div>
       <div class="card-body d-flex justify-content-between">
-        <input type="number"
-        class="form-control form-style"
-        placeholder="Quantity"
-        v-model="quantity">
-        <button class="btn btn-success"
-        @click="buyStock"
-        :disabled="btnDisabled">Buy</button>
+        <div class="input-group mb-3">
+          <input type="number"
+                class="form-control form-style"
+                :class="{ danger: insufficientFund }"
+                placeholder="Quantity"
+                v-model="quantity">
+          <div class="input-group-append">
+            <button class="btn btn-success"
+                    @click="buyStock"
+                    :disabled="btnDisabled">
+                    {{ insufficientFund ? 'Not Enough' : 'Buy'}}
+                    </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,8 +46,18 @@ export default {
     }
   },
   computed: {
+    getFunds() {
+      return this.$store.getters.funds;
+    },
+    insufficientFund() {
+      return this.stock.price * this.quantity > this.getFunds;
+    },
     btnDisabled() {
-      return this.quantity <= 0 || !Number.isInteger(Number(this.quantity));
+      return (
+        this.insufficientFund ||
+        this.quantity <= 0 ||
+        !Number.isInteger(Number(this.quantity))
+      );
     }
   }
 };
@@ -50,5 +67,10 @@ export default {
 <style lang="scss">
 .form-style {
   width: 70%;
+}
+
+.form-control:focus.danger {
+  border-color: #f00;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
 }
 </style>

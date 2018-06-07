@@ -1,19 +1,25 @@
 <template>
-  <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
+  <div class="col-sm-12 col-lg-4 mb-2">
     <div class="card mb-3">
       <div class="card-header  bg-info  text-white">
         <div>{{ stock.name }}
-          <small>(Price: {{ stock.price }} | Quantity {{ stock.quantity }})</small>
+          <small>
+            (Price: {{ stock.price }} | Quantity {{ stock.quantity }}</small>
         </div>
       </div>
       <div class="card-body d-flex justify-content-between">
-        <input type="number"
-        class="form-control form-style"
-        placeholder="Quantity"
-        v-model="quantity">
-        <button class="btn btn-info"
-        @click="sellStock"
-        :disabled="btnDisabled">Sell</button>
+        <div class="input-group mb-3">
+          <input  type="number"
+                  class="form-control form-style"
+                  :class="{ danger: insufficientQuantity }" placeholder="Quantity"
+                  v-model="quantity">
+          <div class="input-group-append">
+            <button class="btn btn-info btn-style"
+                    @click="sellStock"
+                    :disabled="btnDisabled">
+                    {{ insufficientQuantity ? 'Not Enough' : 'Sell' }}</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -30,7 +36,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions({ sellOrder: "sellStock" }),
+    ...mapActions({
+      sellOrder: "sellStock"
+    }),
     sellStock() {
       const order = {
         stockId: this.stock.id,
@@ -42,8 +50,15 @@ export default {
     }
   },
   computed: {
+    insufficientQuantity() {
+      return this.quantity > this.stock.quantity;
+    },
     btnDisabled() {
-      return this.quantity <= 0 || !Number.isInteger(Number(this.quantity));
+      return (
+        this.insufficientQuantity ||
+        this.quantity <= 0 ||
+        !Number.isInteger(Number(this.quantity))
+      );
     }
   }
 };
@@ -53,5 +68,10 @@ export default {
 <style lang="scss">
 .form-style {
   width: 70%;
+}
+
+.form-control:focus.danger {
+  border-color: #f00;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
 }
 </style>
