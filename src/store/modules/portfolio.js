@@ -11,7 +11,7 @@ const mutations = {
   }) {
     const record = state.stocks.find(element => element.id === stockId);
     if (record) {
-      record.quantity += quantity;
+      record.quantity = Number(record.quantity) + Number(quantity);
     } else {
       state.stocks.push({
         id: stockId,
@@ -32,6 +32,10 @@ const mutations = {
       state.stocks.splice(state.stocks.indexOf(record), 1);
     }
     state.funds += quantity * stockPrice;
+  },
+  'SET_PORTFOLIO' (state, payload) {
+    state.funds = payload.funds;
+    state.stocks = payload.portfolioStocks;
   }
 }
 

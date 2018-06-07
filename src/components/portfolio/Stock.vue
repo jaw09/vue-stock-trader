@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     insufficientQuantity() {
-      return this.quantity > this.stock.quantity;
+      return Number(this.quantity) > Number(this.stock.quantity);
     },
     btnDisabled() {
       return (

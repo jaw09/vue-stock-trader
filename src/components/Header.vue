@@ -31,8 +31,8 @@
           Save & Load
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Save Data</a>
-          <a class="dropdown-item" href="#">Load Data</a>
+          <a class="dropdown-item" href="#" @click="saveData">Save Data</a>
+          <a class="dropdown-item" href="#" @click="loadData">Load Data</a>
         </div>
       </li>
       <li class="navbar-text">Funds: {{ getFunds | currency }}</li>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   computed: {
     getFunds() {
@@ -49,9 +50,28 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      fetchData: "loadData"
+    }),
     endDay() {
-      console.log("work");
       this.$store.dispatch("randomizeStocks");
+    },
+    saveData() {
+      const data = {
+        stocks: this.$store.getters.stocks,
+        portfolioStocks: this.$store.getters.portfolioStocks,
+        fund: this.$store.getters.funds
+      };
+      this.$http
+        .put("https://vue-stock-trader-4ebbd.firebaseio.com/data.json", data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$emit("notify");
+          }
+        });
+    },
+    loadData() {
+      this.fetchData();
     }
   }
 };
