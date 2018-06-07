@@ -14,7 +14,8 @@ Vue.config.productionTip = false
 Vue.filter('currency', (value) => {
   return value.toLocaleString('en', {
     style: 'currency',
-    currency: 'TWD'
+    currency: 'TWD',
+    minimumFractionDigits: 0
   });
 })
 
