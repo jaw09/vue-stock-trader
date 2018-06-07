@@ -20,7 +20,12 @@
       </router-link>
     </ul>
     <ul class="navbar-nav my-2 my-lg-0">
-      <li class="nav-item"><a href="#" class="nav-link">End Day</a></li>
+      <li class="nav-item">
+        <a  href="#"
+            class="nav-link"
+            @click.prevent="endDay">
+            End Day</a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Save & Load
@@ -41,6 +46,12 @@ export default {
   computed: {
     getFunds() {
       return this.$store.getters.funds;
+    }
+  },
+  methods: {
+    endDay() {
+      console.log("work");
+      this.$store.dispatch("randomizeStocks");
     }
   }
 };
